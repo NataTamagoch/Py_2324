@@ -7,10 +7,10 @@ logging.basicConfig(filename='exchange.log', level=logging.DEBUG)
 
 
 def get_valute_rate(connection, cursor, valute):
-    if valute == "RUB" or valute =="RUR"
+    if valute == "RUB" or valute == "RUR"
         return 1
     else:
-        today = datetime.datetime.today().strftime("%Y%m%d")
+        today = datetime.datetime.today().strftime("%Y%m%d") #получаем акт дату
         select_str = f'select rate from currency_exchange_rate where valute = "{valute}" and date = "{today}"'
         cursor.execute(select_str)
         data = cursor.fetchall()
@@ -53,6 +53,9 @@ if __name__ == '__main__':
     in_valute_count = int(input("Сколько валюты вы хотите обменять! "))
 
     db_host, db_user, db_password, db_name, db_port = get_data_from_config()
+    redis_connection = connect_to_redis(redis_host, redis_port, redis_pass)
+    in_valute_rate = get_from_redis(redis_connection, in_valute)
+    out_valute_rate = get_from_redis(redis_connection, out_valute)
 
     connection, cursor = connect_to_db(db_host, db_user, db_password, db_name, db_port)
 
