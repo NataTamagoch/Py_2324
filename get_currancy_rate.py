@@ -25,7 +25,9 @@ def get_data_from_config():
 
 
 def get_data_from_cb(site):
-    result = requests.get(site)
+    proxies = {'https': 'https://192.168.20.33:3128',
+               'http': 'http://192.168.20.33:3128'}
+    result = requests.get(site, proxies=proxies)
 
     valites = result.json()
 
